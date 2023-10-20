@@ -1,0 +1,12 @@
+- Deb package
+wget https://github.com/milvus-io/milvus/releases/download/v2.1.4/milvus_2.1.4-1_amd64.deb
+sudo apt-get update
+sudo dpkg -i milvus_2.1.4-1_amd64.deb
+sudo apt-get -f install
+
+- Install env
+pip install -q towhee pymilvus==2.1.0
+pip install milvus_cli==0.3.0
+
+- Sample code
+https://github.com/towhee-io/examples/blob/main/nlp/text_search/search_article_in_medium.ipynb
