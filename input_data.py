@@ -1,29 +1,9 @@
 import pandas as pd
 from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection, utility
 from towhee import ops, pipe, DataCollection
-import openai
 
-openai.api_key = ""
-
-def vectorize(metadata):
-    vector = openai.Embedding.create(
-        input=metadata,
-        model="text-embedding-ada-002"
-    )["data"][0]["embedding"]
-    return vector
-
-parquet_file = 'objaverse/thingiverse/thingiverse.parquet'
+parquet_file = 'parquet/thingiverse-0-101.parquet'
 df = pd.read_parquet(parquet_file, engine='pyarrow')
-df_first_10 = df.head(10)
-
-df_first_10['vector'] = df_first_10['metadata'].apply(vectorize)
-print(df_first_10)
-
-# specify path for export
-path = 'database.txt'
-# export DataFrame to text file
-df_first_10[['fileIdentifier', 'metadata']].to_csv(path, sep=' ', index=False, header=False)
-
 
 connections.connect(host='127.0.0.1', port='19530')
 
@@ -61,7 +41,4 @@ insert_pipe = (pipe.input('df')
                    .output('res')
 )
 
-insert_pipe(df_first_10)
-
-collection.load()
-print(collection.num_entities)
+insert_pipe(df)
