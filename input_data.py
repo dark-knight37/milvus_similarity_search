@@ -1,6 +1,6 @@
 import pandas as pd
-from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection, utility
-from towhee import ops, pipe, DataCollection
+from pymilvus import connections, Collection
+from towhee import ops, pipe
 
 
 insert_pipe = (pipe.input('df')

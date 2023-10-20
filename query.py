@@ -1,6 +1,4 @@
-import numpy as np
-from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection, utility
-from towhee import ops, pipe, DataCollection
+from pymilvus import connections, Collection
 import openai
 
 openai.api_key = ""
@@ -12,23 +10,12 @@ def vectorize(metadata):
     )["data"][0]["embedding"]
     return vector
 
-connections.connect(host='127.0.0.1', port='19530')
+def connect_db(collection_name):
+    connections.connect(host='127.0.0.1', port='19530')
+    collection = Collection(name=collection_name)
+    return collection
 
-fields = [
-        FieldSchema(name="fileIdentifier", dtype=DataType.VARCHAR, is_primary=True, max_length=500),
-        FieldSchema(name="source", dtype=DataType.VARCHAR, max_length=20),
-        FieldSchema(name="license", dtype=DataType.VARCHAR, max_length=100),
-        FieldSchema(name="fileType", dtype=DataType.VARCHAR, max_length=10),
-        FieldSchema(name="sha256", dtype=DataType.VARCHAR, max_length=500),
-        FieldSchema(name="metadata", dtype=DataType.VARCHAR, max_length=100),            
-        FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=1536),
-]
-schema = CollectionSchema(fields=fields, description='search thingiverse')
-
-collection = Collection(name="search_thingiverse", schema=schema)
-collection.load()
-
-def search(text):
+def search(collection, text):
     # Search parameters for the index
     search_params={
         "metric_type": "L2"
@@ -38,10 +25,16 @@ def search(text):
         data=[vectorize(text)],  # Embeded search value
         anns_field="vector",  # Search across embeddings
         param=search_params,
-        limit=1,  # Limit to five results per search
+        limit=3,  # Limit to five results per search
         output_fields=['fileIdentifier', 'fileType', 'metadata']
     )
-    return results[0]
+    
+    result = []
+    for hit in results[0]:
+        result.append(hit.id)
 
-result = search('roof right')
+    return result
+
+collection = connect_db('search_thingiverse')
+result = search(collection, 'tank')
 print(result)
