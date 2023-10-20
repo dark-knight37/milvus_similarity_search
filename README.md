@@ -26,5 +26,7 @@ sample code is in sample folder.
 
 ## objaverse
 - Download thingiverse.parquet file from objaverse
-- Use input_data.py file for converting metadata into vector and store into milvus db
-- Use query.py to query from db
+- vectorize.py : create pieces of parquet and vectorize each pieces
+- create_collection.py : create collection in milvus database
+- input_data.py : input parquet data into database
+- query.py : query from database
