@@ -1,6 +1,6 @@
 import objaverse.xl as oxl
 
-annotations = oxl.get_annotations(download_dir="/objaverse")
+annotations = oxl.get_annotations(download_dir="~/.objaverse")
 
 print(annotations["source"].value_counts())
 print(annotations["fileType"].value_counts())

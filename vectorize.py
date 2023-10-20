@@ -17,7 +17,7 @@ def create_parquet(parquet_file, start, end):
     new_df['vector'] = new_df['metadata'].apply(vectorize)
     new_df.to_parquet(f'parquet/thingiverse-{start}-{end}.parquet', engine='pyarrow')
 
-parquet_file = 'objaverse/thingiverse/thingiverse.parquet'
+parquet_file = '~/.objaverse/thingiverse/thingiverse.parquet'
 for (start, end) in [(0,100), (100,200)]:
     create_parquet(parquet_file, start, end)
     print(f'finished {start} - {end}')

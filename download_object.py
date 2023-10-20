@@ -1,7 +1,7 @@
 import pandas as pd
 import objaverse.xl as oxl
 
-df = pd.read_parquet('objaverse/thingiverse/thingiverse.parquet', engine='pyarrow')
+df = pd.read_parquet('~/.objaverse/thingiverse/thingiverse.parquet', engine='pyarrow')
 # df = pd.read_parquet('objaverse/sketchfab/sketchfab.parquet', engine='pyarrow')
 # df = pd.read_parquet('objaverse/smithsonian/smithsonian.parquet', engine='pyarrow')
 # df = pd.read_parquet('objaverse/github/github.parquet', engine='pyarrow')
